@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Moedas</title>
+    <style>
+        /* Estilização básica da página */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f4f4f4;
+        }
+
+        /* Ajustes para os inputs e selects */
+        input, select {
+            padding: 8px;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        /* Estilização do botão */
+        button {
+            padding: 8px 12px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        /* Mudança de cor ao passar o mouse no botão */
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* Resultado da conversão */
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>Conversor de Moedas</h2>
+
+    <!-- Campo de entrada para inserir o valor a ser convertido -->
+    <input type="number" id="valor" placeholder="Digite o valor" min="0">
+
+    <!-- Dropdown para selecionar a moeda de origem -->
+    <select id="de">
+        <option value="USD">Dólar (USD)</option>
+        <option value="BRL">Real (BRL)</option>
+    </select>
+
+    <span>para</span>
+
+    <!-- Dropdown para selecionar a moeda de destino -->
+    <select id="para">
+        <option value="BRL">Real (BRL)</option>
+        <option value="USD">Dólar (USD)</option>
+    </select>
+
+    <!-- Botão que dispara a conversão -->
+    <button onclick="converter()">Converter</button>
+
+    <!-- Área onde o resultado será exibido -->
+    <p id="resultado"></p>
+
+    <script>
+        // Objeto contendo as taxas de conversão fixas
+        const taxas = {
+            USD_BRL: 5.0,  // 1 USD = 5 BRL
+            BRL_USD: 0.20  // 1 BRL = 0.20 USD
+        };
+
+        function converter() {
+            // Obtém o valor digitado pelo usuário
+            const valor = document.getElementById("valor").value;
+
+            // Obtém as moedas selecionadas
+            const de = document.getElementById("de").value;
+            const para = document.getElementById("para").value;
+
+            // Monta a chave de conversão (ex: "USD_BRL")
+            const chave = `${de}_${para}`;
+
+            // Verifica se a conversão é suportada
+            if (!taxas[chave]) {
+                document.getElementById("resultado").textContent = "Conversão não suportada.";
+                return;
+            }
+
+            // Calcula o valor convertido
+            const resultado = valor * taxas[chave];
+
+            // Exibe o resultado na tela
+            document.getElementById("resultado").textContent = `Convertido: ${resultado.toFixed(2)} ${para}`;
+        }
+    </script>
+</body>
+</html>

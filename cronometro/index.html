@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronômetro</title>
+    <style>
+        /* Estilização básica da página */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f4f4f4;
+        }
+
+        /* Estilização dos botões */
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        /* Mudança de cor ao passar o mouse no botão */
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Botão de cancelar */
+        #cancelar {
+            background-color: #dc3545;
+        }
+
+        #cancelar:hover {
+            background-color: #a71d2a;
+        }
+
+        /* Estilização do input */
+        input {
+            padding: 8px;
+            font-size: 16px;
+            width: 100px;
+            text-align: center;
+        }
+
+        /* Estilização do texto do cronômetro */
+        #contador {
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>Cronômetro</h2>
+
+    <!-- Campo de entrada para definir o tempo em segundos -->
+    <input type="number" id="tempo" placeholder="Segundos" min="1">
+
+    <!-- Botões para iniciar e cancelar o cronômetro -->
+    <button onclick="iniciarCronometro()">Iniciar</button>
+    <button id="cancelar" onclick="cancelarCronometro()">Cancelar</button>
+
+    <!-- Área onde o tempo restante será exibido -->
+    <p id="contador"></p>
+
+    <script>
+        let intervalo; // Variável para armazenar o intervalo
+
+        function iniciarCronometro() {
+            let tempo = parseInt(document.getElementById("tempo").value); // Obtém o valor digitado pelo usuário
+            const contador = document.getElementById("contador"); // Referência ao contador
+
+            // Se o valor for inválido ou menor que 1, não inicia o cronômetro
+            if (isNaN(tempo) || tempo <= 0) return;
+
+            // Atualiza a exibição inicial
+            atualizarTempo(tempo);
+
+            // Configura um intervalo que reduz o tempo a cada segundo
+            intervalo = setInterval(() => {
+                tempo--; // Decrementa o tempo
+                atualizarTempo(tempo);
+
+                // Se o tempo acabar, para o cronômetro e exibe a mensagem final
+                if (tempo <= 0) {
+                    clearInterval(intervalo);
+                    contador.textContent = "⏰ Tempo finalizado!";
+                }
+            }, 1000);
+        }
+
+        function cancelarCronometro() {
+            clearInterval(intervalo); // Para o cronômetro
+            document.getElementById("contador").textContent = "⏹️ Cronômetro cancelado!";
+        }
+
+        function atualizarTempo(tempo) {
+            const contador = document.getElementById("contador");
+
+            // Converte para minutos e segundos se necessário
+            if (tempo >= 60) {
+                const minutos = Math.floor(tempo / 60);
+                const segundos = tempo % 60;
+                contador.textContent = `${minutos}m ${segundos}s restantes`;
+            } else {
+                contador.textContent = `${tempo} segundos restantes`;
+            }
+        }
+        
+    </script>
+</body>
+</html>
